@@ -5,6 +5,7 @@ class Application(models.Model):
 	# just user name
 	proposer = models.CharField(max_length = 255)
 	date_applied = models.DateTimeField(auto_now = True)
+        status = models.CharField(max_length = 16)
 
 class MachineTemplate(models.Model):
 	name = models.CharField(max_length = 255)
