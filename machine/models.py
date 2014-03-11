@@ -5,3 +5,6 @@ class MachineTemplate(models.Model):
     description = models.TextField()
     planned = models.IntegerField(default = 0)
     used = models.IntegerField(default = 0)
+
+    def __unicode__(self):
+        return self.name

@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
-from application.views import create
+from application import views
 
 urlpatterns = patterns('',
-    url(r'^create', create),
+    url(r'^create', views.create),
+    url(r'^save', views.save),
+    url(r'^list', views.list),
 )

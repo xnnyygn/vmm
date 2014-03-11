@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<ul>
+  {% for s in summaries %}
+  <li>
+    <a href="#">{{s.id}}. {{s.date_applied}}</a>
+    <ul>
+      {% for m in s.machines %}
+      <li>{{ m.hostname }} <span>{{ m.template_name }}</span></li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
