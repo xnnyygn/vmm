@@ -1,5 +1,6 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
@@ -7,9 +8,11 @@ from machine.models import MachineTemplate
 from application.models import VirtualMachineApplication as VmApplication
 from application.models import VirtualMachineApplicationDetail as VmApplicationDetail
 
+@login_required
 def create(request):
     machine_templates = MachineTemplate.objects.all()
-    return __render('application/create.html', {'machine_templates': machine_templates}, request, enable_csrf = True)
+    return __render('application/create.html', {
+        'machine_templates': machine_templates}, request, enable_csrf = True)
 
 def __render(template_name, context, request = None, enable_csrf = False):
     if enable_csrf:
@@ -27,7 +30,7 @@ def save(request):
     detail = VmApplicationDetail(application = application, machine_template = machine_template,
         due_date = due_date, hostname = hostname)
     detail.save()
-    return HttpResponse('Done')
+    return redirect('application.views.list')
 
 def __prepare_hostname(user_hostname, auto_generated):
     if auto_generated:
@@ -43,7 +46,7 @@ def __get_machine_template(template_id):
         return MachineTemplate.objects.get(id = template_id)
     except ObjectDoesNotExist:
         # TODO warn no such template id = %s
-        return None
+        return None 
 
 def list(request):
     applications = VmApplication.objects.order_by('date_applied').reverse().all()
@@ -59,5 +62,4 @@ def list(request):
             })
         summary['machines'] = machines
         summaries.append(summary)
-    print summaries
-    return __render('application/list.html', {'summaries': summaries })
+    return render(request, 'application/list.html', {'summaries': summaries })

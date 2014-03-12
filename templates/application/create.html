@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-{% load staticfiles %}
-<link type="text/css" href="{% static 'style.css' %}" rel="stylesheet" />
 <form class="form-horizontal" role="form" action="{% url 'application.views.save' %}" method="post">
   <div class="form-group">
     <label for="machine_template" class="col-sm-2 control-label">Machine Template</label>
@@ -35,5 +33,6 @@
     </div>
   </div>
 </form>
+{% load staticfiles %}
 <script type="text/javascript" src="{% static 'js/form_application.js' %}"></script>
 {% endblock %}
